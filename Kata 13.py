@@ -1,4 +1,5 @@
-#Interpolacion Polinomica
+#--------------Método 1: Interpolacion De Polinomios---------------
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -138,6 +139,7 @@ def evalPolinomio(coef,x):
 
 x = [1950,1960,1970,1980,1990,2000]
 y = createMatrix(6,1,0)
+
 y[0] = [123.5]
 y[1] = [131.2]
 y[2] = [150.7]
@@ -145,13 +147,13 @@ y[3] = [141.3]
 y[4] = [203.2]
 y[5] = [240.5]
 n= 6
+
 A = createMatrix(n,n,0)
 for i in range(n):
     for j in range(n):
         A[i][j] = x[i]**(j)
 
 invA = getMatrizInversa(A)
-
 B = multMatrix(invA,y)
 
 plt.plot(x,y,'ro')
@@ -159,9 +161,9 @@ x2 = np.linspace(1950,2000,12)
 y2 = evalPolinomio(B,x2)
 plt.plot(x2,y2)
 plt.show()
-print("La respuesta es:", y2[4])
+print("Resultado: ", y2[4])
 
-#Metodo Lagrange
+#--------------Metodo 2: Lagrange------------------
 from sympy import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -169,27 +171,28 @@ import numpy as np
 x = [1950,1960,1970,1980,1990,2000]
 y = [123.5,131.2,150.7,141.3,203.2,240.5]
 
-pL = ''
+L = ''
 
 for k in range(len(x)):
-    pL += str(y[k])+'* ('
+    L += str(y[k])+'* ('
     Lxk = 1
     for j in range(len(x)):
         if (j == k):
             continue
-        pL += '(x-%f)*'%(x[j])
+        L += '(x-%f)*'%(x[j])
         Lxk *= x[k] - x[j]
-    pL = pL[:~0] + '/%f) +'%(Lxk)
-pL = pL[:~0]
-#print(pL)
+    L = pL[:~0] + '/%f) +'%(Lxk)
+L = L[:~0]
 expr = sympify(pL)
-#print(expand(expr))
 
 plt.plot(x,y,'ro')
 x2 = np.linspace(1950,2000,12)
 y2 = []
 x = symbols('x')
+
 for i in range(len(x2)):
     y2.append(expr.subs(x,x2[i]))
 plt.plot(x2,y2)
-print("La respuesta es:",y2[4])
+
+
+print("Resultado: ",y2[4])
